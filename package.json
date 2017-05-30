@@ -1,11 +1,11 @@
 {
   "name": "styled-modules",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "CSS Modules support in Next.js",
-  "scripts": {
-    "build": "babel src -d lib",
-    "test": "jest",
-    "watch": "yarn build -- -w"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/traveloka/styled-modules.git"
   },
   "keywords": [
     "css",
@@ -16,13 +16,21 @@
     "soya",
     "soya-next"
   ],
-  "author": "",
-  "license": "MIT",
+  "files": [
+    "lib",
+    "babel.js",
+    "loader.js",
+    "server.js",
+    "style.js"
+  ],
+  "scripts": {
+    "build": "babel src -d lib",
+    "test": "jest",
+    "watch": "yarn build -- -w"
+  },
   "dependencies": {
     "babel-plugin-syntax-jsx": "^6.18.0",
-    "babel-traverse": "^6.24.1",
     "babel-types": "^6.24.1",
-    "babylon": "^6.17.1",
     "loader-utils": "^1.1.0",
     "string-hash": "^1.1.3",
     "webpack": "^2.6.1"
