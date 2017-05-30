@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`works 1`] = `
+"import _SoyaJSXStyle from 'soya-styled-jsx/style';
+import styles from './styles.fixture';
+import { default as styles2 } from './styles.fixture';
+const styles3 = require('./styles.fixture');
+
+export default (() => <div className={[styles.helloWorld, styles2.helloWorld, styles3.helloWorld].join(' ')}>
+    <_SoyaJSXStyle styleId={styles.__hash}>{styles.__source}</_SoyaJSXStyle>
+    <_SoyaJSXStyle styleId={styles2.__hash}>{styles2.__source}</_SoyaJSXStyle>
+    <_SoyaJSXStyle styleId={styles3.__hash}>{styles3.__source}</_SoyaJSXStyle>
+  </div>);"
+`;

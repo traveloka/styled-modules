@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`generates source maps 1`] = `
+"module.exports = {
+  helloWorld: 'helloWorld'
+};
+
+module.exports.__hash = '1910013378';
+module.exports.__source = '\\\\n  .helloWorld {\\\\n    color: red;\\\\n  }\\\\n\\\\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInN0eWxlcy5maXh0dXJlLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUlBIiwiZmlsZSI6InN0eWxlcy5maXh0dXJlLmpzIiwic291cmNlc0NvbnRlbnQiOlsibW9kdWxlLmV4cG9ydHMgPSB7XG4gIGhlbGxvV29ybGQ6ICdoZWxsb1dvcmxkJyxcbn07XG5cbm1vZHVsZS5leHBvcnRzLl9fc291cmNlID0gYFxuICAuaGVsbG9Xb3JsZCB7XG4gICAgY29sb3I6IHJlZDtcbiAgfVxuYDtcbiJdfQ== */\\\\n/*@ sourceURL=styles.fixture.js */';"
+`;
+
+exports[`works 1`] = `
+"module.exports = {
+  helloWorld: 'helloWorld'
+};
+
+module.exports.__hash = '1910013378';
+module.exports.__source = '\\\\n  .helloWorld {\\\\n    color: red;\\\\n  }\\\\n';"
+`;

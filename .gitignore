@@ -1,0 +1,11 @@
+# IDE
+.idea
+
+# build output
+lib
+
+# dependencies
+node_modules
+
+# logs
+*.log
