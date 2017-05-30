@@ -1,4 +1,6 @@
 # Styled Modules
+[![npm version](https://img.shields.io/npm/v/styled-modules.svg?style=flat-square)](https://www.npmjs.com/package/styled-modules)
+
 CSS Modules support in **Next.js** based on [styled-jsx](https://github.com/zeit/styled-jsx).
 
 ## Installation
