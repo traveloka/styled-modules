@@ -1,4 +1,5 @@
 import './global.css';
+require('./global2.css');
 import styles from './helloWorld.css';
 import { root } from './header.css';
 const footer = require('./footer.css');

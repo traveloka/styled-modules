@@ -72,6 +72,31 @@ export default function({ types: t }) {
           );
         }
       },
+      CallExpression(path, state) {
+        if (
+          path.get('callee').node.name !== 'require' ||
+          t.isVariableDeclarator(path.parent)
+        ) {
+          return;
+        }
+        const source = path.get('arguments')[0].node.value;
+        if (state.opts.pattern.test(source)) {
+          path.parentPath.replaceWith(
+            t.variableDeclaration(
+              'var',
+              [
+                t.variableDeclarator(
+                  path.scope.generateUidIdentifier('globalStyles'),
+                  t.callExpression(
+                    t.identifier('require'),
+                    [t.stringLiteral(source)]
+                  )
+                )
+              ]
+            )
+          );
+        }
+      },
       VariableDeclarator(path, state) {
         const subpath = path.get('init');
         if (
