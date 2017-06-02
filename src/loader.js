@@ -1,3 +1,8 @@
+import {
+  STYLE_ID_PROP_NAME,
+  STYLE_CHILD_PROP_NAME,
+} from './_constants';
+import hash from 'string-hash';
 const loaderUtils = require("loader-utils");
 const NodeTemplatePlugin = require("webpack/lib/node/NodeTemplatePlugin");
 const NodeTargetPlugin = require("webpack/lib/node/NodeTargetPlugin");
@@ -71,9 +76,11 @@ module.exports.pitch = function(request) {
     }
     try {
       const text = this.exec(source, request);
+      const css = text.toString();
       callback(null, [
         `module.exports = ${JSON.stringify(text.locals)};`,
-        `module.exports.__source = ${JSON.stringify(text.toString())};`
+        `module.exports.${STYLE_ID_PROP_NAME} = ${JSON.stringify(hash(css))};`,
+        `module.exports.${STYLE_CHILD_PROP_NAME} = ${JSON.stringify(css)};`
       ].join('\n'));
     } catch(e) {
       return callback(e);

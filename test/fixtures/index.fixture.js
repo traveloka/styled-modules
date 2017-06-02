@@ -1,17 +1,22 @@
-import styles from './styles.fixture';
-import { default as styles2 } from './styles.fixture';
-const styles3 = require('./styles.fixture');
+import './global.css';
+import styles from './helloWorld.css';
+import { root } from './header.css';
+const footer = require('./footer.css');
+
+const Header = () => (
+  <div className={root} />
+);
+
+const Footer = () => (
+  <div className={footer.root} />
+);
 
 export default () => (
   <div
-    className={[
-      styles.helloWorld,
-      styles2.helloWorld,
-      styles3.helloWorld,
-    ].join(' ')}
+    className={styles.helloWorld}
   >
-    <style modules>{styles}</style>
-    <style modules>{styles2}</style>
-    <style modules>{styles3}</style>
+    <Header />
+    Hello World
+    <Footer />
   </div>
 );

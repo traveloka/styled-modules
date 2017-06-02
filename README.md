@@ -41,15 +41,12 @@ Next, add `styled-modules/babel` to plugins in your `.babelrc`:
 ```
 
 ## Usage
-Now, you can start using **CSS Modules** in your **Next.js** project. Simply add `<style modules>` to your code as follows:
+Now, you can start using **CSS Modules** in your **Next.js** project as follows:
 ```js
 import styles from './styles.css';
 
 export default () => (
-  <div>
-    <h1 className={styles.title}>Styled Modules</h1>
-    <style modules>{styles}</style>
-  </div>
+  <h1 className={styles.title}>Styled Modules</h1>
 );
 ```
 
@@ -69,3 +66,22 @@ class MyDocument extends Document {
 
 export default MyDocument;
 ```
+
+## How It Works
+The example above transpiles to the following:
+```js
+import _StyledModules from 'styled-module/style';
+import styles from './styles.css';
+
+export default () => (
+  <_StyledModules styles={[{
+    __hash: styles.__hash,
+    __css: styles.__css
+  }]}>
+    <h1 className={styles.title}>Styled Modules</h1>
+  </_StyledModules>
+);
+```
+
+## License
+MIT

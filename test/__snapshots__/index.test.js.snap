@@ -1,14 +1,63 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`works 1`] = `
-"import _SoyaJSXStyle from 'soya-styled-jsx/style';
-import styles from './styles.fixture';
-import { default as styles2 } from './styles.fixture';
-const styles3 = require('./styles.fixture');
+"import _StyledModules from 'styled-modules/style';
+import _globalStyles from './global.css';
 
-export default (() => <div className={[styles.helloWorld, styles2.helloWorld, styles3.helloWorld].join(' ')}>
-    <_SoyaJSXStyle styleId={styles.__hash}>{styles.__source}</_SoyaJSXStyle>
-    <_SoyaJSXStyle styleId={styles2.__hash}>{styles2.__source}</_SoyaJSXStyle>
-    <_SoyaJSXStyle styleId={styles3.__hash}>{styles3.__source}</_SoyaJSXStyle>
-  </div>);"
+import styles from './helloWorld.css';
+import _styles, { root } from './header.css';
+
+const footer = require('./footer.css');
+
+const Header = () => <_StyledModules styles={[{
+  __hash: _globalStyles.__hash,
+  __css: _globalStyles.__css
+}, {
+  __hash: styles.__hash,
+  __css: styles.__css
+}, {
+  __hash: _styles.__hash,
+  __css: _styles.__css
+}, {
+  __hash: footer.__hash,
+  __css: footer.__css
+}]}>
+  <div className={root} />
+</_StyledModules>;
+
+const Footer = () => <_StyledModules styles={[{
+  __hash: _globalStyles.__hash,
+  __css: _globalStyles.__css
+}, {
+  __hash: styles.__hash,
+  __css: styles.__css
+}, {
+  __hash: _styles.__hash,
+  __css: _styles.__css
+}, {
+  __hash: footer.__hash,
+  __css: footer.__css
+}]}>
+  <div className={footer.root} />
+</_StyledModules>;
+
+export default (() => <_StyledModules styles={[{
+  __hash: _globalStyles.__hash,
+  __css: _globalStyles.__css
+}, {
+  __hash: styles.__hash,
+  __css: styles.__css
+}, {
+  __hash: _styles.__hash,
+  __css: _styles.__css
+}, {
+  __hash: footer.__hash,
+  __css: footer.__css
+}]}>
+  <div className={styles.helloWorld}>
+    <Header />
+    Hello World
+    <Footer />
+  </div>
+</_StyledModules>);"
 `;

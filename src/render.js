@@ -21,13 +21,13 @@ function diff(a, b) {
 const fromServer = new Map();
 
 function patch([added, removed]) {
-  for (const [id, c] of added) {
+  for (const [id, css] of added) {
     // Avoid duplicates from server-rendered markup
     if (!fromServer.has(id)) {
       fromServer.set(id, document.getElementById(`${STYLE_ID_PREFIX}-${id}`));
     }
 
-    const tag = fromServer.get(id) || makeStyleTag(c.props.children);
+    const tag = fromServer.get(id) || makeStyleTag(css);
     tags.set(id, tag);
   }
 

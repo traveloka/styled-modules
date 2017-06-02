@@ -1,9 +1,13 @@
-import { Component } from 'react';
+import React from 'react';
 import render from './render';
+import {
+  STYLE_ID_PROP_NAME,
+  STYLE_CHILD_PROP_NAME,
+} from './_constants';
 
 let components = [];
 
-export default class extends Component {
+export default class extends React.Component {
   componentWillMount() {
     mount(this);
   }
@@ -17,14 +21,16 @@ export default class extends Component {
   }
 
   render() {
-    return null;
+    return React.Children.only(this.props.children);
   }
 }
 
 function componentMap() {
   const ret = new Map();
   for (const c of components) {
-    ret.set(c.props.styleId, c);
+    c.props.styles.forEach(style => {
+      ret.set(style[STYLE_ID_PROP_NAME], style[STYLE_CHILD_PROP_NAME]);
+    });
   }
   return ret;
 }

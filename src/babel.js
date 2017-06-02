@@ -1,18 +1,10 @@
 import jsx from 'babel-plugin-syntax-jsx';
 import pkg from '../package.json';
-import { externalVisitor } from './babel-external';
-
-import {
-  findStyles,
-  isStyledJsx,
-} from './_utils';
 
 import {
   STYLE_ID_PROP_NAME,
-  STYLE_SOURCE_PROP_NAME,
-  STYLE_ATTRIBUTE,
+  STYLE_CHILD_PROP_NAME,
   STYLE_COMPONENT,
-  STYLE_COMPONENT_ID,
 } from './_constants';
 
 export default function({ types: t }) {
@@ -21,30 +13,64 @@ export default function({ types: t }) {
     visitor: {
       Program: {
         enter(path, state) {
-          state.hasJSXStyle = null;
-          state.file.hasJSXStyle = false;
+          if (!state.opts.pattern) {
+            throw new Error('Missing pattern plugin options');
+          }
           state.imports = [];
         },
-        exit({node, scope}, state) {
-          if (!(state.file.hasJSXStyle && !scope.hasBinding(STYLE_COMPONENT))) {
+        exit({ node, scope }, state) {
+          if (state.imports.length === 0 || scope.hasBinding(STYLE_COMPONENT)) {
             return;
           }
 
-          const importDeclaration = t.importDeclaration(
-            [t.importDefaultSpecifier(t.identifier(STYLE_COMPONENT))],
-            t.stringLiteral(`${pkg.name}/style`)
+          node.body.unshift(
+            t.importDeclaration(
+              [t.importDefaultSpecifier(t.identifier(STYLE_COMPONENT))],
+              t.stringLiteral(`${pkg.name}/style`)
+            )
           );
-
-          node.body.unshift(importDeclaration);
         },
       },
-      ImportDefaultSpecifier(path, state) {
-        state.imports.push(path.get('local').node.name);
-      },
-      ImportSpecifier(path, state) {
-        state.imports.push(
-          (path.get('local') || path.get('imported')).node.name
-        );
+      ImportDeclaration(path, state) {
+        const source = path.get('source').node.value;
+        if (!state.opts.pattern.test(source)) {
+          return;
+        }
+        const specifiers = path.get('specifiers');
+        if (specifiers.length === 0) {
+          path.replaceWith(
+            t.importDeclaration(
+              [
+                t.importDefaultSpecifier(
+                  path.scope.generateUidIdentifier('globalStyles')
+                ),
+              ],
+              t.stringLiteral(source)
+            )
+          );
+          return;
+        }
+        let hasImportDefault = false;
+        for (const specifier of specifiers) {
+          if (t.isImportDefaultSpecifier(specifier)) {
+            state.imports.push(specifier.get('local').node.name);
+            hasImportDefault = true;
+            return;
+          }
+        }
+
+        if (!hasImportDefault) {
+          const id = path.scope.generateUidIdentifier('styles');
+          path.replaceWith(
+            t.importDeclaration(
+              [
+                t.importDefaultSpecifier(id),
+                ...path.node.specifiers,
+              ],
+              t.stringLiteral(source)
+            )
+          );
+        }
       },
       VariableDeclarator(path, state) {
         const subpath = path.get('init');
@@ -54,116 +80,62 @@ export default function({ types: t }) {
         ) {
           return;
         }
-        state.imports.push(path.get('id').node.name);
+        const source = subpath.get('arguments')[0].node.value;
+        if (state.opts.pattern.test(source)) {
+          state.imports.push(path.get('id').node.name);
+        }
       },
-      JSXElement: {
-        enter(path, state) {
-          if (state.hasJSXStyle !== null) {
-            return;
-          }
-
-          const styles = findStyles(path);
-
-          if (styles.length === 0) {
-            return;
-          }
-
-          state.styles = [];
-          for (const style of styles) {
-            // Compute children excluding whitespace
-            const children = style.get('children').filter(
-              c =>
-              t.isJSXExpressionContainer(c.node) ||
-              // Ignore whitespace around the expression container
-              (t.isJSXText(c.node) && c.node.value.trim() !== '')
-            );
-
-            if (children.length !== 1) {
-              throw path.buildCodeFrameError(
-                `Expected one child under ` +
-                `JSX Style tag, but got ${children.length} ` +
-                `(eg: <style ${STYLE_ATTRIBUTE}>{\`hi\`}</style>)`
-              );
-            }
-
-            const child = children[0];
-
-            if (!t.isJSXExpressionContainer(child)) {
-              throw path.buildCodeFrameError(
-                `Expected a child of ` +
-                `type JSXExpressionContainer under JSX Style tag ` +
-                `(eg: <style ${STYLE_ATTRIBUTE}>{\`hi\`}</style>), got ${child.type}`
-              );
-            }
-
-            const expression = child.get('expression');
-
-            if (t.isIdentifier(expression.node)) {
-              const idName = expression.node.name;
-              if (state.imports.indexOf(idName) !== -1) {
-                const id = t.jSXIdentifier(idName);
-                state.styles.push(id);
-                continue;
-              }
-
-              throw path.buildCodeFrameError(
-                `The Identifier ` +
-                `\`${expression.getSource()}\` is either \`undefined\` or ` +
-                `it is not an external StyleSheet reference i.e. ` +
-                `it doesn't come from an \`import\` or \`require\` statement`
-              );
-            }
-          }
-
-          state.hasJSXStyle = true;
-          state.file.hasJSXStyle = true;
-        },
-        exit(path, state) {
-          if (state.hasJSXStyle) {
-            state.hasJSXStyle = null;
-          }
-
-          if (!isStyledJsx(path)) {
-            return;
-          }
-
-          if (
-            state.styles.length > 0 &&
-            t.isIdentifier(path.get('children')[0].get('expression').node)
-          ) {
-            const id = state.styles.shift();
-
-            path.replaceWith(t.jSXElement(
-              t.jSXOpeningElement(
-                t.jSXIdentifier(STYLE_COMPONENT),
-                [
-                  t.jSXAttribute(
-                    t.jSXIdentifier(STYLE_COMPONENT_ID),
-                    t.jSXExpressionContainer(
-                      t.jSXMemberExpression(
-                        id,
-                        t.jSXIdentifier(STYLE_ID_PROP_NAME)
-                      )
+      JSXElement(path, state) {
+        if (
+          state.imports.length === 0 ||
+          t.isJSXElement(path.parent) ||
+          path.get('openingElement').node.name.name === STYLE_COMPONENT
+        ) {
+          return;
+        }
+        const children = path.get('children');
+        path.replaceWith(
+          t.jSXElement(
+            t.jSXOpeningElement(
+              t.jSXIdentifier(STYLE_COMPONENT),
+              [
+                t.jSXAttribute(
+                  t.jSXIdentifier('styles'),
+                  t.jSXExpressionContainer(
+                    t.arrayExpression(
+                      state.imports.map((importId) => t.objectExpression([
+                        t.objectProperty(
+                          t.identifier(STYLE_ID_PROP_NAME),
+                          t.memberExpression(
+                            t.identifier(importId),
+                            t.identifier(STYLE_ID_PROP_NAME)
+                          ),
+                        ),
+                        t.objectProperty(
+                          t.identifier(STYLE_CHILD_PROP_NAME),
+                          t.memberExpression(
+                            t.identifier(importId),
+                            t.identifier(STYLE_CHILD_PROP_NAME)
+                          )
+                        ),
+                      ]))
                     )
                   )
-                ]
-              ),
-              t.jSXClosingElement(
-                t.jSXIdentifier(STYLE_COMPONENT)
-              ),
-              [
-                t.jSXExpressionContainer(
-                  t.jSXMemberExpression(
-                    id,
-                    t.jSXIdentifier(STYLE_SOURCE_PROP_NAME)
-                  )
-                ),
-              ],
-            ));
-          }
-        },
+                )
+              ]
+            ),
+            t.jSXClosingElement(
+              t.jSXIdentifier(STYLE_COMPONENT)
+            ),
+            [
+              t.jSXText('\n'),
+              path.node,
+              t.jSXText('\n'),
+            ],
+            false
+          )
+        );
       },
-      ...externalVisitor,
     },
   };
 }
