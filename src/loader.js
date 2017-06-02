@@ -78,7 +78,7 @@ module.exports.pitch = function(request) {
       const text = this.exec(source, request);
       const css = text.toString();
       callback(null, [
-        `module.exports = ${JSON.stringify(text.locals)};`,
+        `module.exports = ${JSON.stringify(text.locals || {})};`,
         `module.exports.${STYLE_ID_PROP_NAME} = ${JSON.stringify(hash(css))};`,
         `module.exports.${STYLE_CHILD_PROP_NAME} = ${JSON.stringify(css)};`
       ].join('\n'));
