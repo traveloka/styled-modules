@@ -8,6 +8,11 @@ const transform = (file, opts) => _transform(file, {
   ...opts,
 });
 
+it('does not do anything', async () => {
+  const { code } = await transform('./fixtures/empty.fixture.js');
+  expect(code).toMatchSnapshot();
+});
+
 it('works', async () => {
   const { code } = await transform('./fixtures/index.fixture.js');
   expect(code).toMatchSnapshot();

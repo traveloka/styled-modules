@@ -1,5 +1,7 @@
 # Styled Modules
-[![npm version](https://img.shields.io/npm/v/styled-modules.svg?style=flat-square)](https://www.npmjs.com/package/styled-modules)
+[![Build Status](https://travis-ci.org/traveloka/styled-modules.svg?branch=master)](https://travis-ci.org/traveloka/styled-modules)
+[![Coverage Status](https://coveralls.io/repos/github/traveloka/styled-modules/badge.svg?branch=master)](https://coveralls.io/github/traveloka/styled-modules?branch=master)
+[![NPM Version](https://img.shields.io/npm/v/styled-modules.svg?style=flat-square)](https://www.npmjs.com/package/styled-modules)
 
 CSS Modules support in **Next.js** based on [styled-jsx](https://github.com/zeit/styled-jsx).
 

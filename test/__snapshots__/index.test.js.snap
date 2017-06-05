@@ -1,5 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`does not do anything 1`] = `
+"require('babel-polyfill');
+import React from 'react';
+const Header = require('./Header');
+
+export default class extends React.Component {
+  render() {
+    return <Header />;
+  }
+}"
+`;
+
 exports[`works 1`] = `
 "import _StyledModules from 'styled-modules/style';
 import _globalStyles from './global.css';

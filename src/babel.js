@@ -50,27 +50,23 @@ export default function({ types: t }) {
           );
           return;
         }
-        let hasImportDefault = false;
         for (const specifier of specifiers) {
           if (t.isImportDefaultSpecifier(specifier)) {
             state.imports.push(specifier.get('local').node.name);
-            hasImportDefault = true;
             return;
           }
         }
 
-        if (!hasImportDefault) {
-          const id = path.scope.generateUidIdentifier('styles');
-          path.replaceWith(
-            t.importDeclaration(
-              [
-                t.importDefaultSpecifier(id),
-                ...path.node.specifiers,
-              ],
-              t.stringLiteral(source)
-            )
-          );
-        }
+        const id = path.scope.generateUidIdentifier('styles');
+        path.replaceWith(
+          t.importDeclaration(
+            [
+              t.importDefaultSpecifier(id),
+              ...path.node.specifiers,
+            ],
+            t.stringLiteral(source)
+          )
+        );
       },
       CallExpression(path, state) {
         if (
