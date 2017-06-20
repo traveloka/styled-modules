@@ -51,7 +51,7 @@
   },
   "peerDependencies": {
     "css-loader": "^0.28.4",
-    "react": "^15.5.4"
+    "react": "^15.6.1"
   },
   "jest": {
     "coveragePathIgnorePatterns": [
