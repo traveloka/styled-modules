@@ -7,7 +7,7 @@ import {
   STYLE_COMPONENT,
 } from './_constants';
 
-export default function({ types: t }) {
+export default function ({ types: t }) {
   return {
     inherits: jsx,
     visitor: {
@@ -87,7 +87,7 @@ export default function({ types: t }) {
                     t.identifier('require'),
                     [t.stringLiteral(source)]
                   )
-                )
+                ),
               ]
             )
           );
@@ -114,7 +114,6 @@ export default function({ types: t }) {
         ) {
           return;
         }
-        const children = path.get('children');
         path.replaceWith(
           t.jSXElement(
             t.jSXOpeningElement(
@@ -124,7 +123,7 @@ export default function({ types: t }) {
                   t.jSXIdentifier('styles'),
                   t.jSXExpressionContainer(
                     t.arrayExpression(
-                      state.imports.map((importId) => t.objectExpression([
+                      state.imports.map(importId => t.objectExpression([
                         t.objectProperty(
                           t.identifier(STYLE_ID_PROP_NAME),
                           t.memberExpression(
@@ -142,7 +141,7 @@ export default function({ types: t }) {
                       ]))
                     )
                   )
-                )
+                ),
               ]
             ),
             t.jSXClosingElement(

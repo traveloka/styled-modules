@@ -5,7 +5,7 @@ let prevStyles = new Map();
 
 export default (typeof window === 'undefined' ? renderOnServer : renderOnClient);
 
-function renderOnServer() {}
+function renderOnServer() {} // eslint-disable-line no-empty-function
 
 function renderOnClient(styles) {
   patch(diff(prevStyles, styles));

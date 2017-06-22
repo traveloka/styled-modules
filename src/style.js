@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import render from './render';
 import {
   STYLE_ID_PROP_NAME,
@@ -8,6 +9,10 @@ import {
 let components = [];
 
 export default class extends React.Component {
+  static propTypes = {
+    children: PropTypes.element.isRequired,
+  };
+
   componentWillMount() {
     mount(this);
   }

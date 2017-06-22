@@ -3,7 +3,7 @@ import plugin from '../src/babel';
 
 const transform = (file, opts) => _transform(file, {
   plugins: [
-    [plugin, { pattern: /\.css$/ }]
+    [plugin, { pattern: /\.css$/ }],
   ],
   ...opts,
 });
