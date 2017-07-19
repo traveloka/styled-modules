@@ -13,24 +13,29 @@ export default class extends React.Component {
 `;
 
 exports[`should not inject styled-modules/style 1`] = `
-"import style from 'styled-modules/style';
+"import React from 'react';
+import style from 'styled-modules/style';
 const StyledModule = require('styled-modules/style');
 import layoutStyles from './Layout.css';
 import contentStyles from './Content.css';
 
-const Content = () => <_StyledModules styles={[{
-  __hash: layoutStyles.__hash,
-  __css: layoutStyles.__css
-}, {
-  __hash: contentStyles.__hash,
-  __css: contentStyles.__css
-}]}>
-  <style styles={[contentStyles]}>
-    <div className={contentStyles.content}>
-      Content
-    </div>
-  </style>
-</_StyledModules>;
+const Content = class extends React.Component {
+  render() {
+    return <_StyledModules styles={[{
+      __hash: layoutStyles.__hash,
+      __css: layoutStyles.__css
+    }, {
+      __hash: contentStyles.__hash,
+      __css: contentStyles.__css
+    }]}>
+      <style styles={[contentStyles]}>
+        <div className={contentStyles.content}>
+          Content
+        </div>
+      </style>
+    </_StyledModules>;
+  }
+};
 
 export default (() => <_StyledModules styles={[{
   __hash: layoutStyles.__hash,
@@ -49,6 +54,7 @@ export default (() => <_StyledModules styles={[{
 
 exports[`works 1`] = `
 "import _StyledModules from 'styled-modules/style';
+import React from 'react';
 import _globalStyles from './global.css';
 
 var _globalStyles2 = require('./global2.css');
@@ -96,26 +102,30 @@ const Footer = () => <_StyledModules styles={[{
   <div className={footer.root} />
 </_StyledModules>;
 
-export default (() => <_StyledModules styles={[{
-  __hash: _globalStyles.__hash,
-  __css: _globalStyles.__css
-}, {
-  __hash: _globalStyles2.__hash,
-  __css: _globalStyles2.__css
-}, {
-  __hash: styles.__hash,
-  __css: styles.__css
-}, {
-  __hash: _styles.__hash,
-  __css: _styles.__css
-}, {
-  __hash: footer.__hash,
-  __css: footer.__css
-}]}>
-  <div className={styles.helloWorld}>
-    <Header />
-    Hello World
-    <Footer />
-  </div>
-</_StyledModules>);"
+export default class extends React.Component {
+  render() {
+    return <_StyledModules styles={[{
+      __hash: _globalStyles.__hash,
+      __css: _globalStyles.__css
+    }, {
+      __hash: _globalStyles2.__hash,
+      __css: _globalStyles2.__css
+    }, {
+      __hash: styles.__hash,
+      __css: styles.__css
+    }, {
+      __hash: _styles.__hash,
+      __css: _styles.__css
+    }, {
+      __hash: footer.__hash,
+      __css: footer.__css
+    }]}>
+      <div className={styles.helloWorld}>
+        <Header />
+        Hello World
+        <Footer />
+      </div>
+    </_StyledModules>;
+  }
+}"
 `;
