@@ -17,3 +17,8 @@ it('works', async () => {
   const { code } = await transform('./fixtures/index.fixture.js');
   expect(code).toMatchSnapshot();
 });
+
+it('should not inject styled-modules/style', async () => {
+  const { code } = await transform('./fixtures/import.fixture.js');
+  expect(code).toMatchSnapshot();
+});

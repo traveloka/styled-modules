@@ -12,6 +12,41 @@ export default class extends React.Component {
 }"
 `;
 
+exports[`should not inject styled-modules/style 1`] = `
+"import style from 'styled-modules/style';
+const StyledModule = require('styled-modules/style');
+import layoutStyles from './Layout.css';
+import contentStyles from './Content.css';
+
+const Content = () => <_StyledModules styles={[{
+  __hash: layoutStyles.__hash,
+  __css: layoutStyles.__css
+}, {
+  __hash: contentStyles.__hash,
+  __css: contentStyles.__css
+}]}>
+  <style styles={[contentStyles]}>
+    <div className={contentStyles.content}>
+      Content
+    </div>
+  </style>
+</_StyledModules>;
+
+export default (() => <_StyledModules styles={[{
+  __hash: layoutStyles.__hash,
+  __css: layoutStyles.__css
+}, {
+  __hash: contentStyles.__hash,
+  __css: contentStyles.__css
+}]}>
+  <StyledModule styles={[layoutStyles]}>
+    <div className={layoutStyles.layout}>
+      <Content />
+    </div>
+  </StyledModule>
+</_StyledModules>);"
+`;
+
 exports[`works 1`] = `
 "import _StyledModules from 'styled-modules/style';
 import _globalStyles from './global.css';

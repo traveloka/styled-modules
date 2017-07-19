@@ -17,9 +17,14 @@ export default function ({ types: t }) {
             throw new Error('Missing pattern plugin options');
           }
           state.imports = [];
+          state.isStyledModulesImported = false;
         },
         exit({ node, scope }, state) {
-          if (state.imports.length === 0 || scope.hasBinding(STYLE_COMPONENT)) {
+          if (
+            state.imports.length === 0 ||
+            scope.hasBinding(STYLE_COMPONENT) ||
+            state.isStyledModulesImported
+          ) {
             return;
           }
 
@@ -33,40 +38,41 @@ export default function ({ types: t }) {
       },
       ImportDeclaration(path, state) {
         const source = path.get('source').node.value;
-        if (!state.opts.pattern.test(source)) {
-          return;
-        }
-        const specifiers = path.get('specifiers');
-        if (specifiers.length === 0) {
+        if (source === 'styled-modules/style') {
+          state.isStyledModulesImported = true;
+        } else if (state.opts.pattern.test(source)) {
+          const specifiers = path.get('specifiers');
+          if (specifiers.length === 0) {
+            path.replaceWith(
+              t.importDeclaration(
+                [
+                  t.importDefaultSpecifier(
+                    path.scope.generateUidIdentifier('globalStyles')
+                  ),
+                ],
+                t.stringLiteral(source)
+              )
+            );
+            return;
+          }
+          for (const specifier of specifiers) {
+            if (t.isImportDefaultSpecifier(specifier)) {
+              state.imports.push(specifier.get('local').node.name);
+              return;
+            }
+          }
+
+          const id = path.scope.generateUidIdentifier('styles');
           path.replaceWith(
             t.importDeclaration(
               [
-                t.importDefaultSpecifier(
-                  path.scope.generateUidIdentifier('globalStyles')
-                ),
+                t.importDefaultSpecifier(id),
+                ...path.node.specifiers,
               ],
               t.stringLiteral(source)
             )
           );
-          return;
         }
-        for (const specifier of specifiers) {
-          if (t.isImportDefaultSpecifier(specifier)) {
-            state.imports.push(specifier.get('local').node.name);
-            return;
-          }
-        }
-
-        const id = path.scope.generateUidIdentifier('styles');
-        path.replaceWith(
-          t.importDeclaration(
-            [
-              t.importDefaultSpecifier(id),
-              ...path.node.specifiers,
-            ],
-            t.stringLiteral(source)
-          )
-        );
       },
       CallExpression(path, state) {
         if (
@@ -102,7 +108,9 @@ export default function ({ types: t }) {
           return;
         }
         const source = subpath.get('arguments')[0].node.value;
-        if (state.opts.pattern.test(source)) {
+        if (source === 'styled-modules/style') {
+          state.isStyledModulesImported = true;
+        } else if (state.opts.pattern.test(source)) {
           state.imports.push(path.get('id').node.name);
         }
       },
