@@ -1,3 +1,4 @@
+import React from 'react';
 import './global.css';
 require('./global2.css');
 import styles from './helloWorld.css';
@@ -12,12 +13,14 @@ const Footer = () => (
   <div className={footer.root} />
 );
 
-export default () => (
-  <div
-    className={styles.helloWorld}
-  >
-    <Header />
-    Hello World
-    <Footer />
-  </div>
-);
+export default class extends React.Component {
+  render() {
+    return (
+      <div className={styles.helloWorld}>
+        <Header />
+        Hello World
+        <Footer />
+      </div>
+    );
+  }
+}
