@@ -16,6 +16,9 @@ export default function ({ types: t }) {
           if (!state.opts.pattern) {
             throw new Error('Missing pattern plugin options');
           }
+          if (typeof state.opts.pattern === 'string') {
+            state.opts.pattern = new RegExp(state.opts.pattern);
+          }
           state.imports = [];
           state.isStyledModulesImported = false;
         },
