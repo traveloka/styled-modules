@@ -48,7 +48,18 @@ Now, you can start using **CSS Modules** in your **Next.js** project as follows:
 import styles from './styles.css';
 
 export default () => (
-  <h1 className={styles.title}>Styled Modules</h1>
+  <div>
+    <h1 className={styles.title}>Styled Modules</h1>
+    <ol>
+      {[
+        'Item 1',
+        'Item 2',
+        'Item 3'
+      ].map((item, index) => (
+        <li key={index}>{item}</li>
+      ))}
+    </ol>
+  </div>
 );
 ```
 
@@ -76,11 +87,32 @@ import _StyledModules from 'styled-module/style';
 import styles from './styles.css';
 
 export default () => (
-  <_StyledModules styles={[{
-    __hash: styles.__hash,
-    __css: styles.__css
-  }]}>
-    <h1 className={styles.title}>Styled Modules</h1>
+  <_StyledModules
+    styles={[{
+      __hash: styles.__hash,
+      __css: styles.__css
+    }]}
+  >
+    <div>
+      <h1 className={styles.title}>Styled Modules</h1>
+      <ol>
+        {[
+          'Item 1',
+          'Item 2',
+          'Item 3'
+        ].map((item, index) => (
+          <_StyledModules
+            key={index}
+            styles={[{
+              __hash: styles.__hash,
+              __css: styles.__css
+            }]}
+          >
+            <li>{item}</li>
+          </_StyledModules>
+        ))}
+      </ol>
+    </div>
   </_StyledModules>
 );
 ```
