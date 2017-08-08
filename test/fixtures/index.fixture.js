@@ -19,6 +19,7 @@ export default class extends React.Component {
       <div className={styles.helloWorld}>
         <Header />
         Hello World
+        {[1, 2, 3].map((value, index) => <span key={index}>{value}</span>)}
         <Footer />
       </div>
     );

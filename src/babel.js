@@ -125,11 +125,24 @@ export default function ({ types: t }) {
         ) {
           return;
         }
+        const openingNode = path.get('openingElement').node;
+        const hoistProps = [];
+        const ownProps = openingNode.attributes.reduce((props, prop) => {
+          if (['key'].indexOf(prop.name.name) !== -1) {
+            hoistProps.push(prop);
+          } else {
+            props.push(prop);
+          }
+          return props;
+        }, []);
+        openingNode.attributes = ownProps;
+
         path.replaceWith(
           t.jSXElement(
             t.jSXOpeningElement(
               t.jSXIdentifier(STYLE_COMPONENT),
               [
+                ...hoistProps,
                 t.jSXAttribute(
                   t.jSXIdentifier('styles'),
                   t.jSXExpressionContainer(
