@@ -7,12 +7,12 @@ CSS Modules support in **Next.js** based on [styled-jsx](https://github.com/zeit
 
 ## Installation
 Styled Modules uses **CSS Loader** to enable **CSS Modules**, run the following to install it:
-```
+```bash
 npm install css-loader --save-dev
 ```
 
 Next, run the following to install Styled Modules:
-```
+```bash
 npm install styled-modules
 ```
 
