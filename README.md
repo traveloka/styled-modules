@@ -1,4 +1,6 @@
 # Styled Modules
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/traveloka/styled-modules.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/traveloka/styled-modules.svg?branch=master)](https://travis-ci.org/traveloka/styled-modules)
 [![Coverage Status](https://coveralls.io/repos/github/traveloka/styled-modules/badge.svg?branch=master)](https://coveralls.io/github/traveloka/styled-modules?branch=master)
 [![NPM Version](https://img.shields.io/npm/v/styled-modules.svg?style=flat-square)](https://www.npmjs.com/package/styled-modules)
