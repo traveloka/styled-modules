@@ -128,7 +128,7 @@ export default function ({ types: t }) {
         const openingNode = path.get('openingElement').node;
         const hoistProps = [];
         const ownProps = openingNode.attributes.reduce((props, prop) => {
-          if (['key'].indexOf(prop.name.name) !== -1) {
+          if (t.isJSXAttribute(prop) && ['key'].indexOf(prop.name.name) !== -1) {
             hoistProps.push(prop);
           } else {
             props.push(prop);

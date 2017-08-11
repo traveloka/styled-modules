@@ -104,6 +104,12 @@ const Footer = () => <_StyledModules styles={[{
 
 export default class extends React.Component {
   render() {
+    const props = {
+      style: {
+        color: 'red'
+      }
+    };
+
     return <_StyledModules styles={[{
       __hash: _globalStyles.__hash,
       __css: _globalStyles.__css
@@ -139,7 +145,7 @@ export default class extends React.Component {
           __hash: footer.__hash,
           __css: footer.__css
         }]}>
-          <span>{value}</span>
+          <span {...props}>{value}</span>
         </_StyledModules>)}
         <Footer />
       </div>

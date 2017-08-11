@@ -15,11 +15,17 @@ const Footer = () => (
 
 export default class extends React.Component {
   render() {
+    const props = {
+      style: {
+        color: 'red',
+      },
+    };
+
     return (
       <div className={styles.helloWorld}>
         <Header />
         Hello World
-        {[1, 2, 3].map((value, index) => <span key={index}>{value}</span>)}
+        {[1, 2, 3].map((value, index) => <span key={index} {...props}>{value}</span>)}
         <Footer />
       </div>
     );
