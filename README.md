@@ -40,7 +40,11 @@ module.exports = (config, { dev }) => {
 Next, add `styled-modules/babel` to plugins in your `.babelrc`:
 ```json
 {
-  "plugins": ["styled-modules/babel"]
+  "plugins": [
+    ["styled-modules/babel", {
+      "pattern": "\\.css$"
+    }]
+  ]
 }
 ```
 
