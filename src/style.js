@@ -10,7 +10,11 @@ let components = [];
 
 export default class extends React.Component {
   static propTypes = {
-    children: PropTypes.element.isRequired,
+    children: PropTypes.element,
+  };
+
+  static defaultProps = {
+    children: null,
   };
 
   componentWillMount() {
@@ -26,7 +30,7 @@ export default class extends React.Component {
   }
 
   render() {
-    return React.Children.only(this.props.children);
+    return this.props.children && React.Children.only(this.props.children);
   }
 }
 
