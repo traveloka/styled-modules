@@ -121,7 +121,8 @@ export default function ({ types: t }) {
         if (
           state.imports.length === 0 ||
           t.isJSXElement(path.parent) ||
-          path.get('openingElement').node.name.name === STYLE_COMPONENT
+          path.get('openingElement').node.name.name === STYLE_COMPONENT ||
+          state.isStyledModulesImported
         ) {
           return;
         }

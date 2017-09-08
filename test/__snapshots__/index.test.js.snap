@@ -21,35 +21,19 @@ import contentStyles from './Content.css';
 
 const Content = class extends React.Component {
   render() {
-    return <_StyledModules styles={[{
-      __hash: layoutStyles.__hash,
-      __css: layoutStyles.__css
-    }, {
-      __hash: contentStyles.__hash,
-      __css: contentStyles.__css
-    }]}>
-      <style styles={[contentStyles]}>
+    return <style styles={[contentStyles]}>
         <div className={contentStyles.content}>
           Content
         </div>
-      </style>
-    </_StyledModules>;
+      </style>;
   }
 };
 
-export default (() => <_StyledModules styles={[{
-  __hash: layoutStyles.__hash,
-  __css: layoutStyles.__css
-}, {
-  __hash: contentStyles.__hash,
-  __css: contentStyles.__css
-}]}>
-  <StyledModule styles={[layoutStyles]}>
+export default (() => <StyledModule styles={[layoutStyles]}>
     <div className={layoutStyles.layout}>
       <Content />
     </div>
-  </StyledModule>
-</_StyledModules>);"
+  </StyledModule>);"
 `;
 
 exports[`works 1`] = `
