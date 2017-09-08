@@ -14,7 +14,7 @@ export default function ({ types: t }) {
       Program: {
         enter(path, state) {
           if (!state.opts.pattern) {
-            throw new Error('Missing pattern plugin options');
+            state.opts.pattern = /\.css$/;
           }
           if (typeof state.opts.pattern === 'string') {
             state.opts.pattern = new RegExp(state.opts.pattern);
