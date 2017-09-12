@@ -8,18 +8,23 @@
 CSS Modules support in **Next.js** based on [styled-jsx](https://github.com/zeit/styled-jsx).
 
 ## Installation
+
 Styled Modules uses **CSS Loader** to enable **CSS Modules**, run the following to install it:
+
 ```bash
 npm install css-loader --save-dev
 ```
 
 Next, run the following to install Styled Modules:
+
 ```bash
 npm install styled-modules
 ```
 
 ## Configuration
+
 In the root of your **Next.js** project directory, create `next.config.js` with the following:
+
 ```js
 // next.config.js
 module.exports = (config, { dev }) => {
@@ -38,6 +43,7 @@ module.exports = (config, { dev }) => {
 ```
 
 Next, add `styled-modules/babel` to plugins in your `.babelrc`:
+
 ```json
 {
   "plugins": [
@@ -49,7 +55,9 @@ Next, add `styled-modules/babel` to plugins in your `.babelrc`:
 ```
 
 ## Usage
+
 Now, you can start using **CSS Modules** in your **Next.js** project as follows:
+
 ```js
 import styles from './styles.css';
 
@@ -70,6 +78,7 @@ export default () => (
 ```
 
 Notice that the styles only got applied on the client side. To make it works on the server side as well, create a custom document at `./pages/_document.js` with the following code:
+
 ```js
 import Document from 'next/document';
 import flush from 'styled-modules/server';
@@ -87,7 +96,13 @@ export default MyDocument;
 ```
 
 ## How It Works
+
+- Check whether `styled-modules/style` is imported explicitly. If so, then do not transpile.
+- Find any `import` and `require` statements that matches `pattern` option. If none is matched, then do not transpile.
+- Find any jsx syntaxes. if it's the root element, then wrap it with `styled-modules/style`.
+
 The example above transpiles to the following:
+
 ```js
 import _StyledModules from 'styled-module/style';
 import styles from './styles.css';
@@ -124,4 +139,5 @@ export default () => (
 ```
 
 ## License
+
 MIT
