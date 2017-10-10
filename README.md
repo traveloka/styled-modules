@@ -73,6 +73,9 @@ export default () => (
         <li key={index}>{item}</li>
       ))}
     </ol>
+    {!this.props.hidden && (
+      <div>Hidden content</div>
+    )}
   </div>
 );
 ```
@@ -97,9 +100,9 @@ export default MyDocument;
 
 ## How It Works
 
-- Check whether `styled-modules/style` is imported explicitly. If so, then do not transpile.
-- Find any `import` and `require` statements that matches `pattern` option. If none is matched, then do not transpile.
-- Find any jsx syntaxes. if it's the root element, then wrap it with `styled-modules/style`.
+- Check whether `styled-modules/style` is imported explicitly. If so, then it won't transpile. This will allow you to manually wrap your component with `styled-modules/style`. Note that you should only wrap the root of your component.
+- Find any `import` and `require` statements that matches `pattern` option. If none is matched, then it won't transpile.
+- Find any jsx syntaxes. if its parent is not a jsx syntax, then wrap it with `styled-modules/style`.
 
 The example above transpiles to the following:
 
@@ -133,6 +136,43 @@ export default () => (
           </_StyledModules>
         ))}
       </ol>
+      {!this.props.hidden && (
+        <_StyledModules
+          styles={[{
+            __hash: styles.__hash,
+            __css: styles.__css
+          }]}
+        >
+          <div>Hidden content</div>
+        </_StyledModules>
+      )}
+    </div>
+  </_StyledModules>
+);
+```
+
+As you can see, the `styled-modules/style` component is injected multiple times. This could be a problem when a wrapped component parent depends on or needs to manipulate the children, i.e. `react-transition-group`. To avoid that, you can explicitly import and wrap the component like the following:
+
+```js
+import _StyledModules from 'styled-modules/style';
+import styles from './styles.css';
+
+export default () => (
+  <_StyledModules styles={[styles]}>
+    <div>
+      <h1 className={styles.title}>Styled Modules</h1>
+      <ol>
+        {[
+          'Item 1',
+          'Item 2',
+          'Item 3'
+        ].map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+      </ol>
+      {!this.props.hidden && (
+        <div>Hidden content</div>
+      )}
     </div>
   </_StyledModules>
 );
