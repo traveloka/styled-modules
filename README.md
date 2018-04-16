@@ -27,18 +27,20 @@ In the root of your **Next.js** project directory, create `next.config.js` with 
 
 ```js
 // next.config.js
-module.exports = (config, { dev }) => {
-  config.module.rules.push(
-    {
-      test: /\.css$/,
-      use: [
-        'babel-loader',
-        'styled-modules/loader',
-        'css-loader?modules',
-      ],
-    },
-  );
-  return config;
+module.exports = {
+  webpack(config, { dev }) => {
+    config.module.rules.push(
+      {
+        test: /\.css$/,
+        use: [
+          'babel-loader',
+          'styled-modules/loader',
+          'css-loader?modules',
+        ],
+      },
+    );
+    return config;
+  },
 };
 ```
 
